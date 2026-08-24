@@ -58,15 +58,47 @@ document.querySelectorAll('.project').forEach((project) => {
   slides.innerHTML = pages.map((page, index) => {
     const title = project.querySelector('h2').textContent;
     return `<figure class="slide${index === 0 ? ' is-active' : ''}"><img src="${page}" alt="${title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`;
-  }).join('') + (video ? `<figure class="slide"><video controls playsinline preload="none" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source src="${video.src}" type="${video.type}">${video.fallback ? `<source src="${video.fallback}" type="video/mp4">` : ''}当前浏览器不支持视频播放。</video></figure>` : '');
+  }).join('') + (video ? `<figure class="slide slide-video"><video controls playsinline preload="none" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source src="${video.src}" type="${video.type}">${video.fallback ? `<source src="${video.fallback}" type="video/mp4">` : ''}当前浏览器不支持视频播放。</video><button class="video-play" type="button" aria-label="播放${previewTitle}项目视频"><i aria-hidden="true">▶</i><span>播放视频 / PLAY</span></button></figure>` : '');
   counter.textContent = `01 / ${String(total).padStart(2, '0')}`;
+
+  const media = slides.querySelector('video');
+  const playTrigger = slides.querySelector('.video-play');
+
+  if (media && playTrigger) {
+    const showPlayTrigger = () => playTrigger.classList.remove('is-hidden');
+    const hidePlayTrigger = () => playTrigger.classList.add('is-hidden');
+
+    playTrigger.addEventListener('click', async () => {
+      if (media.readyState === HTMLMediaElement.HAVE_NOTHING) {
+        media.preload = 'metadata';
+        media.load();
+      }
+
+      try {
+        await media.play();
+      } catch (error) {
+        showPlayTrigger();
+      }
+    });
+
+    media.addEventListener('play', hidePlayTrigger);
+    media.addEventListener('ended', showPlayTrigger);
+  }
 
   const update = (next) => {
     const slideElements = slides.querySelectorAll('.slide');
+    const outgoingVideo = slideElements[current].querySelector('video');
+    if (outgoingVideo) outgoingVideo.pause();
     slideElements[current].classList.remove('is-active');
     current = (next + total) % total;
     slideElements[current].classList.add('is-active');
     counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
+
+    const activeVideo = slideElements[current].querySelector('video');
+    if (activeVideo && activeVideo.readyState === HTMLMediaElement.HAVE_NOTHING) {
+      activeVideo.preload = 'metadata';
+      activeVideo.load();
+    }
   };
 
   project.querySelector('[data-prev]').addEventListener('click', () => update(current - 1));
