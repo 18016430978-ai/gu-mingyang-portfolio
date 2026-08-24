@@ -1,0 +1,52 @@
+{
+  "color": {
+    "paper": "#F3F3F3",
+    "ink": "#1A1A1A",
+    "white": "#FFFFFF",
+    "stage": "#DEDEDE",
+    "line": "#8A8A8A"
+  },
+  "type": {
+    "display": "Helvetica Neue, Helvetica, Arial, PingFang SC, sans-serif",
+    "information": "Helvetica Neue, Helvetica, Arial, PingFang SC, sans-serif",
+    "languageHierarchy": "Chinese primary / English metadata",
+    "smallTextLetterSpacing": ".02em–.045em",
+    "bodyLineHeight": "1.4"
+  },
+  "space": [4, 8, 16, 24, 32, 48, 64, 96],
+  "border": {
+    "width": "1px",
+    "radius": "0px"
+  },
+  "breakpoint": {
+    "mobile": "760px"
+  },
+  "motion": {
+    "fast": "250ms",
+    "reveal": "700ms",
+    "ease": "cubic-bezier(0.76, 0, 0.24, 1)"
+  },
+  "intro": {
+    "desktopMargin": "1.6vw",
+    "projectRowHeight": "6.75vw",
+    "floatWidth": "15.5vw",
+    "floatHeight": "23.25vw",
+    "floatOffsetY": "-25%",
+    "resumeColumn": "left 34.13vw / width 31.75vw",
+    "portraitColumn": "left 66.65vw / right desktop margin",
+    "resumeRows": 5,
+    "resumeStart": "42.5vh"
+  },
+  "projectDetail": {
+    "headerHeight": "41px",
+    "introHeightDesktop": "1000px",
+    "heroInset": "55px 23px 14px calc(50% + 6px)",
+    "heroRadius": "15px",
+    "pageStackRadius": "16px 16px 0 0",
+    "pageStackGap": "8px",
+    "pageStackBackground": "#FFFFFF",
+    "videoStageBackground": "#0B0B0D",
+    "introLayer": "sticky / z-index 1",
+    "pageStackLayer": "relative / z-index 20"
+  }
+}
