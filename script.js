@@ -36,9 +36,17 @@ const gridOverlay = document.querySelector('.grid-overlay');
 const menuTrigger = document.querySelector('.menu-trigger');
 const menuPanel = document.querySelector('.menu-panel');
 
-window.addEventListener('load', () => {
+const dismissLoader = () => {
   window.setTimeout(() => loader.classList.add('is-gone'), 550);
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', dismissLoader, { once: true });
+} else {
+  dismissLoader();
+}
+
+window.addEventListener('load', () => loader.classList.add('is-gone'), { once: true });
 
 document.querySelectorAll('.project').forEach((project) => {
   const key = project.dataset.project;
