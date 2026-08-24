@@ -1,31 +1,31 @@
 const projectPages = {
-  'yuhuashi-info': ['assets/works/yuhuashi-info/01.jpg', 'assets/works/yuhuashi-info/02.jpg', 'assets/works/yuhuashi-info/03.jpg', 'assets/works/yuhuashi-info/04.jpg'],
-  'yuhuashi-installation': ['assets/works/yuhuashi-installation/01.jpg', 'assets/works/yuhuashi-installation/02.jpg', 'assets/works/yuhuashi-installation/03.jpg', 'assets/works/yuhuashi-installation/04.jpg'],
-  nature: ['assets/works/nature/01.jpg', 'assets/works/nature/02.jpg', 'assets/works/nature/03.jpg', 'assets/works/nature/04.jpg', 'assets/works/nature/05.jpg', 'assets/works/nature/06.jpg'],
-  tongqu: ['assets/works/tongqu/01.jpg', 'assets/works/tongqu/02.jpg', 'assets/works/tongqu/03.jpg', 'assets/works/tongqu/04.jpg', 'assets/works/tongqu/05.jpg'],
-  coffee: ['assets/works/coffee/01.jpg', 'assets/works/coffee/02.jpg', 'assets/works/coffee/03.jpg', 'assets/works/coffee/04.jpg', 'assets/works/coffee/05.jpg'],
-  tangsancai: ['assets/works/tangsancai/01.jpg', 'assets/works/tangsancai/02.jpg', 'assets/works/tangsancai/03.jpg'],
-  space: ['assets/works/space/01.jpg', 'assets/works/space/02.jpg'],
-  dopamine: ['assets/works/dopamine/01.jpg', 'assets/works/dopamine/02.jpg'],
-  appetite: ['assets/works/appetite/01.jpg', 'assets/works/appetite/02.jpg'],
-  cpus: ['assets/works/cpus/01.jpg', 'assets/works/cpus/02.jpg'],
+  'yuhuashi-info': ['assets/works-web/yuhuashi-info/01.webp', 'assets/works-web/yuhuashi-info/02.webp', 'assets/works-web/yuhuashi-info/03.webp', 'assets/works-web/yuhuashi-info/04.webp'],
+  'yuhuashi-installation': ['assets/works-web/yuhuashi-installation/01.webp', 'assets/works-web/yuhuashi-installation/02.webp', 'assets/works-web/yuhuashi-installation/03.webp', 'assets/works-web/yuhuashi-installation/04.webp'],
+  nature: ['assets/works-web/nature/01.webp', 'assets/works-web/nature/02.webp', 'assets/works-web/nature/03.webp', 'assets/works-web/nature/04.webp', 'assets/works-web/nature/05.webp', 'assets/works-web/nature/06.webp'],
+  tongqu: ['assets/works-web/tongqu/01.webp', 'assets/works-web/tongqu/02.webp', 'assets/works-web/tongqu/03.webp', 'assets/works-web/tongqu/04.webp', 'assets/works-web/tongqu/05.webp'],
+  coffee: ['assets/works-web/coffee/01.webp', 'assets/works-web/coffee/02.webp', 'assets/works-web/coffee/03.webp', 'assets/works-web/coffee/04.webp', 'assets/works-web/coffee/05.webp'],
+  tangsancai: ['assets/works-web/tangsancai/01.webp', 'assets/works-web/tangsancai/02.webp', 'assets/works-web/tangsancai/03.webp'],
+  space: ['assets/works-web/space/01.webp', 'assets/works-web/space/02.webp'],
+  dopamine: ['assets/works-web/dopamine/01.webp', 'assets/works-web/dopamine/02.webp'],
+  appetite: ['assets/works-web/appetite/01.webp', 'assets/works-web/appetite/02.webp'],
+  cpus: ['assets/works-web/cpus/01.webp', 'assets/works-web/cpus/02.webp'],
 };
 
 const projectCovers = {
-  'yuhuashi-info': 'assets/covers/yuhuashi-info.jpg',
-  'yuhuashi-installation': 'assets/covers/yuhuashi-installation.jpg',
-  nature: 'assets/covers/nature.jpg',
-  tongqu: 'assets/covers/tongqu.jpg',
-  coffee: 'assets/covers/coffee.jpg',
-  tangsancai: 'assets/covers/tangsancai.jpg',
-  space: 'assets/covers/space.jpg',
-  dopamine: 'assets/covers/dopamine.jpg',
-  appetite: 'assets/covers/appetite.jpg',
-  cpus: 'assets/covers/cpus.jpg',
+  'yuhuashi-info': 'assets/covers-web/yuhuashi-info.webp',
+  'yuhuashi-installation': 'assets/covers-web/yuhuashi-installation.webp',
+  nature: 'assets/covers-web/nature.webp',
+  tongqu: 'assets/covers-web/tongqu.webp',
+  coffee: 'assets/covers-web/coffee.webp',
+  tangsancai: 'assets/covers-web/tangsancai.webp',
+  space: 'assets/covers-web/space.webp',
+  dopamine: 'assets/covers-web/dopamine.webp',
+  appetite: 'assets/covers-web/appetite.webp',
+  cpus: 'assets/covers-web/cpus.webp',
 };
 
 const projectVideos = {
-  'yuhuashi-installation': { src: 'assets/videos/yuhuashi-installation.mp4', type: 'video/mp4' },
+  'yuhuashi-installation': { src: 'assets/videos/yuhuashi-installation-web.webm', type: 'video/webm' },
   nature: { src: 'assets/videos/nature-web.webm', type: 'video/webm' },
   tongqu: { src: 'assets/videos/tongqu-web.webm', type: 'video/webm' },
 };
@@ -51,14 +51,14 @@ document.querySelectorAll('.project').forEach((project) => {
   let current = 0;
 
   const previewTitle = project.querySelector('h2').textContent;
-  projectHead.insertAdjacentHTML('beforeend', `<div class="project-float" aria-hidden="true"><img src="${projectCovers[key]}" alt="" loading="lazy"></div>`);
+  projectHead.insertAdjacentHTML('beforeend', `<div class="project-float" aria-hidden="true"><img src="${projectCovers[key]}" alt="" loading="lazy" decoding="async"></div>`);
   projectHead.querySelector('h2').setAttribute('tabindex', '0');
   projectHead.querySelector('h2').setAttribute('aria-label', `${previewTitle}项目预览`);
 
   slides.innerHTML = pages.map((page, index) => {
     const title = project.querySelector('h2').textContent;
-    return `<figure class="slide${index === 0 ? ' is-active' : ''}"><img src="${page}" alt="${title}项目展板 ${index + 1}" loading="${index === 0 ? 'eager' : 'lazy'}"></figure>`;
-  }).join('') + (video ? `<figure class="slide"><video controls playsinline preload="metadata" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source src="${video.src}" type="${video.type}">${video.fallback ? `<source src="${video.fallback}" type="video/mp4">` : ''}当前浏览器不支持视频播放。</video></figure>` : '');
+    return `<figure class="slide${index === 0 ? ' is-active' : ''}"><img src="${page}" alt="${title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`;
+  }).join('') + (video ? `<figure class="slide"><video controls playsinline preload="none" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source src="${video.src}" type="${video.type}">${video.fallback ? `<source src="${video.fallback}" type="video/mp4">` : ''}当前浏览器不支持视频播放。</video></figure>` : '');
   counter.textContent = `01 / ${String(total).padStart(2, '0')}`;
 
   const update = (next) => {

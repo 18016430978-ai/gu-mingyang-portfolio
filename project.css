@@ -63,7 +63,7 @@ body.menu-open main, body.menu-open .site-header { transform: translateX(var(--d
 
 .page-stack { position: relative; z-index: 20; padding: 12px var(--pad) 0; overflow: hidden; border-radius: 16px 16px 0 0; background: #fff; }
 .page-stack-inner { display: grid; gap: 8px; }
-.page-board { margin: 0; background: #fff; }
+.page-board { margin: 0; background: #fff; content-visibility: auto; contain-intrinsic-size: auto 36vw; }
 .page-board img { display: block; width: 100%; height: auto; object-fit: contain; }
 .page-video { position: relative; min-height: min(80vh, 900px); display: grid; place-items: center; padding: clamp(18px, 3vw, 52px); background: #0b0b0d; }
 .page-video video { display: block; width: auto; max-width: 100%; height: auto; max-height: 86vh; background: #0b0b0d; }
