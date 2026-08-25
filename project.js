@@ -8,7 +8,7 @@ const projects = {
     claim: '纹理、时间与地域，共同构成一套可以被阅读的自然语言。'
   },
   'yuhuashi-installation': {
-    page: '08', title: '金陵雨花石录 · 交互装置', year: '2026', typeZh: '交互装置', typeEn: 'INTERACTIVE INSTALLATION', cover: 'assets/covers-web/yuhuashi-installation.webp', pages: ['assets/works-web/yuhuashi-installation/01.webp','assets/works-web/yuhuashi-installation/02.webp','assets/works-web/yuhuashi-installation/03.webp','assets/works-web/yuhuashi-installation/04.webp'], video: 'assets/videos/yuhuashi-installation-web.webm', videoType: 'video/webm',
+    page: '08', title: '金陵雨花石录 · 交互装置', year: '2026', typeZh: '交互装置', typeEn: 'INTERACTIVE INSTALLATION', cover: 'assets/covers-web/yuhuashi-installation-detail.webp', pages: ['assets/works-web/yuhuashi-installation/01.webp','assets/works-web/yuhuashi-installation/02.webp','assets/works-web/yuhuashi-installation/03.webp','assets/works-web/yuhuashi-installation/04.webp'], video: 'assets/videos/yuhuashi-installation-web.webm', videoType: 'video/webm',
     deck: '将雨花石的矿物色彩与剖面纹样转化为可触摸、可选择、可实时反馈的 Mapping 交互体验。',
     concept: '参与者选择雨花石并按压感应区域，装置读取石材类型、触摸压力与持续时间，生成动态波纹和对应色彩，使隐藏的地质信息通过光影被感知。',
     requirements: '交互需要连接矿石样本、压力传感器、Arduino、TouchDesigner 与投影系统，同时保持操作路径直观、反馈及时且具有沉浸感。',
