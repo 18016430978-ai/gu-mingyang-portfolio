@@ -1,7 +1,7 @@
 const projectPages = {
   'yuhuashi-info': ['assets/works-web/yuhuashi-info/01.webp', 'assets/works-web/yuhuashi-info/02.webp', 'assets/works-web/yuhuashi-info/03.webp', 'assets/works-web/yuhuashi-info/04.webp'],
   'yuhuashi-installation': ['assets/works-web/yuhuashi-installation/01.webp', 'assets/works-web/yuhuashi-installation/02.webp', 'assets/works-web/yuhuashi-installation/03.webp', 'assets/works-web/yuhuashi-installation/04.webp'],
-  nature: ['assets/works-web/nature/01.webp', 'assets/works-web/nature/02.webp', 'assets/works-web/nature/03.webp', 'assets/works-web/nature/04.webp', 'assets/works-web/nature/05.webp', 'assets/works-web/nature/06.webp'],
+  nature: ['assets/works-web/nature/01.webp', 'assets/works-web/nature/02.webp', 'assets/works-web/nature/03.webp', 'assets/works-web/nature/04.webp', 'assets/works-web/nature/05.webp', 'assets/works-web/nature/06.webp', 'assets/works-web/nature/07.webp'],
   tongqu: ['assets/works-web/tongqu/01.webp', 'assets/works-web/tongqu/02.webp', 'assets/works-web/tongqu/03.webp', 'assets/works-web/tongqu/04.webp', 'assets/works-web/tongqu/05.webp'],
   coffee: ['assets/works-web/coffee/01.webp', 'assets/works-web/coffee/02.webp', 'assets/works-web/coffee/03.webp', 'assets/works-web/coffee/04.webp', 'assets/works-web/coffee/05.webp'],
   tangsancai: ['assets/works-web/tangsancai/01.webp', 'assets/works-web/tangsancai/02.webp', 'assets/works-web/tangsancai/03.webp'],

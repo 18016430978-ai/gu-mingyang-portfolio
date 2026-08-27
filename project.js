@@ -16,7 +16,7 @@ const projects = {
     claim: '当手触碰石头，亿万年的地质信息被重新点亮。'
   },
   nature: {
-    page: '09', title: '自然色差', year: '2026', typeZh: '数据可视化', typeEn: 'DATA VISUALIZATION', cover: 'assets/covers-web/nature.webp', pages: ['assets/works-web/nature/01.webp','assets/works-web/nature/02.webp','assets/works-web/nature/03.webp','assets/works-web/nature/04.webp','assets/works-web/nature/05.webp','assets/works-web/nature/06.webp'], video: 'assets/videos/nature-web.webm', videoType: 'video/webm',
+    page: '09', title: '自然色差', year: '2026', typeZh: '数据可视化', typeEn: 'DATA VISUALIZATION', cover: 'assets/covers-web/nature.webp', pages: ['assets/works-web/nature/01.webp','assets/works-web/nature/02.webp','assets/works-web/nature/03.webp','assets/works-web/nature/04.webp','assets/works-web/nature/05.webp','assets/works-web/nature/06.webp','assets/works-web/nature/07.webp'], video: 'assets/videos/nature-web.webm', videoType: 'video/webm',
     deck: '从自然环境中的色彩差异出发，将观察、采样与数据转化为一套兼具分析性与感知性的视觉研究。',
     concept: '色彩既是视觉现象，也是环境变化留下的证据。项目以连续采样和对照关系呈现颜色在时间、地点与媒介中的偏移。',
     requirements: '需要建立可复用的数据编码方式，同时保留自然色彩的细微感受，避免图表语言压缩掉观察本身的丰富性。',
