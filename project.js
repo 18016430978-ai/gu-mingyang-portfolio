@@ -128,19 +128,25 @@ prepareRetryableImage(hero, project.cover);
 hero.src = project.cover;
 
 const pageStack = document.querySelector('.page-stack-inner');
+const videoPoster = prefersMobileAssets ? mobileAsset(project.pages[0]) : project.cover;
+const videoFallbackSource = !prefersMobileAssets && project.videoFallback
+  ? `<source data-src="${project.videoFallback}" type="${project.videoFallbackType || 'video/webm'}">`
+  : '';
 pageStack.innerHTML = project.pages.map((page, index) => (
-  `<figure class="page-board"><img data-src="${prefersMobileAssets ? mobileAsset(page) : asset(page)}" data-fallback="${asset(page)}" alt="${project.title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`
+  `<figure class="page-board"><img data-src="${prefersMobileAssets ? mobileAsset(page) : asset(page)}" data-fallback="${asset(page)}" alt="${project.title}项目展板 ${index + 1}" loading="lazy" decoding="async" fetchpriority="${index === 0 ? 'high' : 'low'}"></figure>`
 )).join('') + (project.video ? (
-  `<figure class="page-board page-video"><video controls playsinline preload="none" poster="${project.cover}" aria-label="${project.title}项目视频"><source src="${project.video}" type="${project.videoType || 'video/mp4'}">${project.videoFallback ? `<source src="${project.videoFallback}" type="${project.videoFallbackType || 'video/webm'}">` : ''}当前浏览器不支持视频播放。</video><figcaption>项目影像 / PROJECT FILM</figcaption></figure>`
+  `<figure class="page-board page-video"><video controls playsinline preload="none" poster="${videoPoster}" aria-label="${project.title}项目视频"><source data-src="${project.video}" type="${project.videoType || 'video/mp4'}">${videoFallbackSource}当前浏览器不支持视频播放。</video><button class="video-play" type="button" aria-label="播放${project.title}项目视频"><i aria-hidden="true">▶</i><span>播放视频 / PLAY</span></button><figcaption>项目影像 / PROJECT FILM</figcaption></figure>`
 ) : '');
 
 const loadBoardImage = (image) => {
   if (image.src) return;
   prepareRetryableImage(image, image.dataset.fallback);
   image.src = image.dataset.src;
+  image.removeAttribute('data-src');
 };
 
 const boardImages = [...pageStack.querySelectorAll('img[data-src]')];
+loadBoardImage(boardImages[0]);
 if ('IntersectionObserver' in window) {
   const boardObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach((entry) => {
@@ -148,34 +154,41 @@ if ('IntersectionObserver' in window) {
       loadBoardImage(entry.target);
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: '180px 0px' });
-  boardImages.forEach((image) => boardObserver.observe(image));
+  }, { rootMargin: '320px 0px' });
+  boardImages.slice(1).forEach((image) => boardObserver.observe(image));
 } else {
-  boardImages.forEach(loadBoardImage);
+  boardImages.slice(1).forEach(loadBoardImage);
 }
 
 const projectVideo = pageStack.querySelector('video');
 if (projectVideo) {
-  const warmVideo = () => {
-    if (projectVideo.dataset.warmed) return;
-    projectVideo.dataset.warmed = 'true';
-    projectVideo.preload = 'metadata';
+  const playTrigger = pageStack.querySelector('.video-play');
+  const attachVideo = () => {
+    if (projectVideo.dataset.attached) return;
+    projectVideo.dataset.attached = 'true';
+    projectVideo.querySelectorAll('source[data-src]').forEach((source) => {
+      source.src = source.dataset.src;
+      source.removeAttribute('data-src');
+    });
+    projectVideo.preload = 'auto';
     projectVideo.load();
   };
 
-  if ('IntersectionObserver' in window) {
-    const videoObserver = new IntersectionObserver((entries, observer) => {
-      if (!entries.some((entry) => entry.isIntersecting)) return;
-      warmVideo();
-      observer.disconnect();
-    }, { rootMargin: '1200px 0px' });
-    videoObserver.observe(projectVideo);
-  }
-
-  projectVideo.addEventListener('pointerdown', () => {
-    projectVideo.preload = 'auto';
-    warmVideo();
-  }, { once: true });
+  projectVideo.addEventListener('pointerdown', attachVideo, { once: true });
+  projectVideo.addEventListener('touchstart', attachVideo, { once: true, passive: true });
+  projectVideo.addEventListener('keydown', (event) => {
+    if (event.key === 'Enter' || event.key === ' ') attachVideo();
+  });
+  playTrigger?.addEventListener('click', async () => {
+    attachVideo();
+    try {
+      await projectVideo.play();
+    } catch (error) {
+      playTrigger.classList.remove('is-hidden');
+    }
+  });
+  projectVideo.addEventListener('play', () => playTrigger?.classList.add('is-hidden'));
+  projectVideo.addEventListener('ended', () => playTrigger?.classList.remove('is-hidden'));
 }
 
 const currentIndex = order.indexOf(id);

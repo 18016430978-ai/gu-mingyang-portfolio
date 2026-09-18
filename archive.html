@@ -453,12 +453,16 @@ const initProject = (project) => {
   projectHead.querySelector('h2').setAttribute('tabindex', '0');
   projectHead.querySelector('h2').setAttribute('aria-label', `${previewTitle}项目预览`);
 
+  const fallbackVideoSource = !prefersMobileAssets && video?.fallback
+    ? `<source data-src="${video.fallback}" type="${video.fallbackType || 'video/webm'}">`
+    : '';
   slides.innerHTML = pages.map((page, index) => {
     const title = project.querySelector('h2').textContent;
     return `<figure class="slide${index === 0 ? ' is-active' : ''}"><img data-src="${displayPage(page)}" data-fallback="${page}" alt="${title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`;
-  }).join('') + (video ? `<figure class="slide slide-video"><video controls playsinline preload="none" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source data-src="${video.src}" type="${video.type}">${video.fallback ? `<source data-src="${video.fallback}" type="${video.fallbackType || 'video/webm'}">` : ''}当前浏览器不支持视频播放。</video><button class="video-play" type="button" aria-label="播放${previewTitle}项目视频"><i aria-hidden="true">▶</i><span>播放视频 / PLAY</span></button></figure>` : '');
+  }).join('') + (video ? `<figure class="slide slide-video"><video controls playsinline preload="none" poster="${displayPage(pages[0])}" aria-label="${previewTitle}项目视频"><source data-src="${video.src}" type="${video.type}">${fallbackVideoSource}当前浏览器不支持视频播放。</video><button class="video-play" type="button" aria-label="播放${previewTitle}项目视频"><i aria-hidden="true">▶</i><span>播放视频 / PLAY</span></button></figure>` : '');
   counter.textContent = `01 / ${String(total).padStart(2, '0')}`;
   loadSlideImage(slides.querySelector('.slide.is-active img'));
+  loadSlideImage(slides.querySelector('.slide:nth-child(2) img'));
 
   const media = slides.querySelector('video');
   const playTrigger = slides.querySelector('.video-play');
@@ -500,17 +504,10 @@ const initProject = (project) => {
     slideElements[current].classList.add('is-active');
     const activeImage = slideElements[current].querySelector('img[data-src]');
     loadSlideImage(activeImage);
+    const nextImage = slideElements[(current + 1) % total].querySelector('img[data-src]');
+    loadSlideImage(nextImage);
     counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
 
-    const activeVideo = slideElements[current].querySelector('video');
-    if (activeVideo && activeVideo.readyState === HTMLMediaElement.HAVE_NOTHING) {
-      activeVideo.querySelectorAll('source[data-src]').forEach((source) => {
-        source.src = source.dataset.src;
-        source.removeAttribute('data-src');
-      });
-      activeVideo.preload = 'metadata';
-      activeVideo.load();
-    }
   };
 
   project.querySelector('[data-prev]').addEventListener('click', () => update(current - 1));
@@ -525,7 +522,7 @@ if ('IntersectionObserver' in window) {
       initProject(entry.target);
       observer.unobserve(entry.target);
     });
-  }, { rootMargin: '700px 0px' });
+  }, { rootMargin: '350px 0px' });
   projects.forEach((project) => projectObserver.observe(project));
 } else {
   projects.forEach(initProject);

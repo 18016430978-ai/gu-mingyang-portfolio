@@ -70,6 +70,15 @@ body.menu-open main, body.menu-open .site-header { transform: translateX(var(--d
 .page-board.is-error::after { content: "图片加载失败 · 请刷新重试 / IMAGE RETRY"; padding: 20px; text-align: center; letter-spacing: .04em; }
 .page-video { position: relative; min-height: min(80vh, 900px); aspect-ratio: auto; display: grid; place-items: center; padding: clamp(18px, 3vw, 52px); background: #0b0b0d; }
 .page-video video { display: block; width: auto; max-width: 100%; height: auto; max-height: 86vh; background: #0b0b0d; }
+.video-play {
+  position: absolute; z-index: 4; top: 50%; left: 50%; display: flex; align-items: center; gap: 11px;
+  min-height: 44px; padding: 10px 16px 10px 11px; border: 1px solid rgba(255,255,255,.75); border-radius: 999px;
+  background: rgba(10,10,12,.84); color: #fff; letter-spacing: .05em; transform: translate(-50%, -50%);
+  backdrop-filter: blur(8px); transition: opacity .18s ease, transform .18s ease, visibility .18s;
+}
+.video-play i { display: grid; width: 24px; height: 24px; place-items: center; border-radius: 50%; background: #fff; color: #111; font-size: 9px; font-style: normal; padding-left: 1px; }
+.video-play:hover { transform: translate(-50%, -50%) scale(1.035); }
+.video-play.is-hidden { opacity: 0; visibility: hidden; pointer-events: none; }
 .page-video figcaption { position: absolute; right: var(--pad); bottom: 14px; color: #fff; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
 
 .project-pagination { position: relative; z-index: 20; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); background: #fff; }
