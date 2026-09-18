@@ -7,7 +7,149 @@
     <meta name="description" content="顾明泱作品集项目详情" />
     <title>项目详情 — 顾明泱作品集</title>
     <link rel="icon" href="data:," />
-    <link rel="stylesheet" href="project.css?v=20260918d" />
+    <!-- Inline CSS keeps the portfolio styled in slow in-app browsers. -->
+    <style>
+:root {
+  --paper: #f3f3f3;
+  --ink: #1a1a1a;
+  --stage: #dedede;
+  --line: #8a8a8a;
+  --pad: clamp(14px, 1.6vw, 23px);
+  --drawer-width: 376px;
+  --sans: "PP Neue Montreal", "Helvetica Neue", Helvetica, Arial, "PingFang SC", "Microsoft YaHei", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { overflow-x: hidden; scroll-behavior: smooth; }
+body { margin: 0; overflow-x: hidden; background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 12px; line-height: 1; letter-spacing: .015em; }
+button, a { color: inherit; font: inherit; touch-action: manipulation; }
+button { padding: 0; border: 0; background: none; cursor: pointer; }
+a { text-decoration: none; }
+img { display: block; width: 100%; height: 100%; }
+figure { margin: 0; }
+button:focus-visible, a:focus-visible { outline: 1px dashed var(--ink); outline-offset: 4px; }
+
+.skip-link { position: fixed; z-index: 1000; top: -60px; left: var(--pad); padding: 8px 10px; background: var(--ink); color: var(--paper); }
+.skip-link:focus { top: 50px; }
+.loader { position: fixed; z-index: 999; inset: 0; display: flex; align-items: center; justify-content: space-between; padding: 0 2vw; overflow: hidden; background: var(--ink); color: var(--paper); font-size: 30vw; font-weight: 500; letter-spacing: -.08em; transition: transform .8s cubic-bezier(.77,0,.18,1), visibility .8s; }
+.loader i { font-style: normal; }
+.loader.is-gone { transform: translateY(-100%); visibility: hidden; }
+
+.site-header { position: fixed; z-index: 120; top: 0; right: 0; left: 0; height: 41px; padding: 0 var(--pad); display: grid; grid-template-columns: 116px 352px 1fr auto; align-items: center; border-bottom: 1px solid var(--line); background: rgba(243,243,243,.94); backdrop-filter: blur(8px); text-transform: uppercase; letter-spacing: .035em; transition: transform .55s cubic-bezier(.77,0,.18,1); }
+.menu-trigger { justify-self: start; text-transform: uppercase; }
+.page-code { min-width: 0; display: grid; grid-template-columns: 16px 30px 1fr; align-items: center; overflow: hidden; }
+.page-code i { width: 1px; height: 14px; background: var(--ink); }
+.page-code b { overflow: hidden; font-weight: 400; text-overflow: ellipsis; white-space: nowrap; }
+.site-id { justify-self: start; }
+.grid-trigger { display: flex; align-items: center; gap: 8px; text-transform: uppercase; }
+.grid-trigger i { width: 8px; height: 8px; border-radius: 50%; background: var(--ink); }
+
+.menu-panel { position: fixed; z-index: 150; inset: 0 auto 0 0; width: var(--drawer-width); padding: 24px 23px 44px; overflow-y: auto; border-right: 6px solid var(--ink); background: var(--paper); transform: translateX(-101%); transition: transform .55s cubic-bezier(.77,0,.18,1); }
+.menu-panel.is-open { transform: none; }
+.menu-panel h2 { margin: 0 0 71px; font-size: 54px; font-weight: 500; line-height: .9; letter-spacing: -.055em; }
+.menu-panel nav { margin-left: 36px; }
+.menu-panel nav a { display: grid; grid-template-columns: 35px 1fr; min-height: 126px; align-content: start; }
+.menu-panel nav a:nth-child(2) { min-height: 165px; }
+.menu-panel nav strong { font-size: 29px; font-weight: 500; line-height: .85; letter-spacing: -.055em; }
+.menu-panel nav span { grid-column: 1 / -1; width: calc(100% + 36px); margin: 18px 0 0 -36px; text-align: center; font-weight: 600; line-height: .95; letter-spacing: .02em; }
+.menu-panel nav a:hover strong { text-decoration: underline; text-underline-offset: 3px; }
+
+main { isolation: isolate; transition: transform .55s cubic-bezier(.77,0,.18,1); }
+body.menu-open main, body.menu-open .site-header { transform: translateX(var(--drawer-width)); }
+
+.project-intro { position: sticky; z-index: 1; top: 0; height: 1000px; background: var(--paper); }
+.intro-left { position: absolute; top: 0; left: 0; width: calc(50% - 6px); height: 100%; padding: 52px 0 0 var(--pad); }
+.intro-left h1 { margin: 0; font-size: 54px; font-weight: 400; line-height: .9; letter-spacing: -.05em; }
+.project-deck { width: calc(100% - var(--pad)); max-width: 691px; margin: 15px 0 0; font-size: 28px; font-weight: 400; line-height: 1.18; letter-spacing: -.035em; }
+.project-type { position: absolute; top: 393px; left: var(--pad); display: grid; font-size: 54px; font-weight: 400; line-height: 1.02; letter-spacing: -.05em; }
+.project-type [data-type] { display: grid; }
+.project-type [data-type] small { margin-top: 7px; font-size: 12px; line-height: 1; letter-spacing: .045em; }
+.project-type b { font-weight: 400; }
+.project-notes { position: absolute; right: 0; bottom: 0; left: 0; }
+.project-notes article { min-height: 150px; display: grid; grid-template-columns: 18.2% 18% 1fr; align-content: start; border-top: 1px solid var(--line); }
+.project-notes article > span { margin-left: calc(var(--pad) * -1); padding: 1px var(--pad); background: var(--ink); color: var(--paper); text-transform: uppercase; letter-spacing: .035em; }
+.project-notes p { grid-column: 3; width: calc(100% - var(--pad)); margin: 15px 0 0; font-size: 14px; font-weight: 600; line-height: 1.4; letter-spacing: .018em; }
+.intro-visual { position: absolute; top: 55px; right: var(--pad); bottom: 14px; left: calc(50% + 6px); overflow: hidden; border-radius: 15px; background: var(--stage); }
+.intro-visual img { object-fit: cover; }
+
+.page-stack { position: relative; z-index: 20; padding: 12px var(--pad) 0; overflow: hidden; border-radius: 16px 16px 0 0; background: #fff; }
+.page-stack-inner { display: grid; gap: 8px; }
+.page-board { margin: 0; aspect-ratio: 2560 / 903; background: #fff; content-visibility: auto; contain-intrinsic-size: auto 36vw; }
+.page-board img { display: block; width: 100%; height: auto; object-fit: contain; }
+.page-board.is-error { min-height: 40vh; display: grid; place-items: center; background: var(--stage); }
+.page-board.is-error img { display: none; }
+.page-board.is-error::after { content: "图片加载失败 · 请刷新重试 / IMAGE RETRY"; padding: 20px; text-align: center; letter-spacing: .04em; }
+.page-video { position: relative; min-height: min(80vh, 900px); aspect-ratio: auto; display: grid; place-items: center; padding: clamp(18px, 3vw, 52px); background: #0b0b0d; }
+.page-video video { display: block; width: auto; max-width: 100%; height: auto; max-height: 86vh; background: #0b0b0d; }
+.page-video figcaption { position: absolute; right: var(--pad); bottom: 14px; color: #fff; font-size: 11px; letter-spacing: .06em; text-transform: uppercase; }
+
+.project-pagination { position: relative; z-index: 20; display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); background: #fff; }
+.project-pagination a { min-height: 330px; display: flex; flex-direction: column; justify-content: space-between; padding: 16px var(--pad) 24px; }
+.project-pagination a + a { border-left: 1px solid var(--line); text-align: right; }
+.project-pagination strong { font-size: 4.5vw; font-weight: 400; line-height: .9; letter-spacing: -.05em; }
+
+footer { position: relative; z-index: 20; min-height: 100vh; padding: 0 var(--pad) 12px; display: flex; flex-direction: column; justify-content: flex-end; background: #fff; }
+.footer-lockup { display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid var(--line); }
+.footer-lockup span, .footer-lockup b { font-size: 19vw; font-weight: 500; line-height: .9; letter-spacing: -.075em; }
+.footer-links { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); text-transform: uppercase; letter-spacing: .035em; }
+.footer-links > * { padding: 10px 0; border-bottom: 1px solid var(--line); }
+.footer-links > *:nth-child(even) { text-align: right; }
+
+.grid-overlay { position: fixed; z-index: 260; inset: 0; pointer-events: none; opacity: 0; visibility: hidden; background: repeating-linear-gradient(to bottom, rgba(56,101,255,.32) 0 1px, transparent 1px 14px); transition: opacity .2s, visibility .2s; }
+.grid-overlay.is-visible { opacity: 1; visibility: visible; }
+.grid-overlay > div { position: absolute; inset: 0 var(--pad); display: grid; grid-template-columns: repeat(12,1fr); gap: 16px; }
+.grid-overlay i { background: rgba(26,26,26,.055); border-right: 1px solid rgba(26,26,26,.08); border-left: 1px solid rgba(26,26,26,.08); }
+
+@media (max-width: 760px) {
+  :root { --drawer-width: calc(100vw - 58px); }
+  body.menu-open { overflow: hidden; }
+  .site-header { height: 48px; padding: 0 14px; grid-template-columns: auto minmax(0, 1fr) auto; gap: 12px; }
+  .menu-trigger, .grid-trigger { min-height: 44px; display: flex; align-items: center; }
+  .page-code { grid-template-columns: 13px 31px minmax(0, 1fr); }
+  .site-id { display: none; }
+  .menu-panel { padding: 18px 14px 40px; }
+  .menu-panel h2 { font-size: 48px; margin-bottom: 68px; }
+  .menu-panel nav a, .menu-panel nav a:nth-child(2) { min-height: 126px; }
+
+  .project-intro { position: relative; height: auto; padding-top: 48px; }
+  .intro-left { position: relative; width: 100%; height: auto; padding: 22px 14px 0; }
+  .intro-left h1 { font-size: clamp(30px, 9vw, 40px); line-height: .94; overflow-wrap: anywhere; }
+  .project-deck { width: 100%; margin-top: 20px; font-size: clamp(20px, 6.1vw, 27px); line-height: 1.24; }
+  .project-type { position: static; margin-top: 64px; font-size: clamp(30px, 9vw, 40px); line-height: 1; }
+  .project-type [data-type] small { margin-top: 6px; font-size: 10px; }
+  .project-notes { position: static; margin: 64px -14px 0; }
+  .project-notes article { min-height: 152px; grid-template-columns: 88px minmax(0, 1fr); }
+  .project-notes article > span { grid-column: 1; margin: 0; padding: 2px 14px; }
+  .project-notes p { grid-column: 2; width: calc(100% - 14px); margin: 14px 0 0; font-size: 13px; line-height: 1.45; overflow-wrap: anywhere; }
+  .intro-visual { position: relative; inset: auto; height: auto; aspect-ratio: 4 / 5; margin: 18px 14px 0; border-radius: 12px; }
+  .page-stack { padding: 8px 8px 0; border-radius: 12px 12px 0 0; }
+  .page-stack-inner { gap: 6px; }
+  .page-video { min-height: 58vh; padding: 12px; }
+  .page-video figcaption { right: 14px; bottom: 10px; }
+  .project-pagination { grid-template-columns: 1fr; }
+  .project-pagination a { min-height: 184px; padding-top: 18px; padding-bottom: 22px; }
+  .project-pagination a + a { border-top: 1px solid var(--line); border-left: 0; }
+  .project-pagination strong { font-size: 11vw; }
+  footer { min-height: 86vh; padding-bottom: max(12px, env(safe-area-inset-bottom)); }
+  .footer-lockup { display: grid; grid-template-columns: minmax(0, 1fr) auto; }
+  .footer-lockup span, .footer-lockup b { min-width: 0; font-size: clamp(76px, 26vw, 112px); white-space: nowrap; }
+  .footer-links { grid-template-columns: 1fr; }
+  .footer-links > *:nth-child(even) { text-align: left; }
+  .grid-overlay > div { inset: 0 14px; grid-template-columns: repeat(6,1fr); gap: 10px; }
+  .grid-overlay i:nth-child(n + 7) { display: none; }
+}
+
+@media (max-width: 360px) {
+  .site-header { gap: 8px; }
+  .grid-trigger span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+  .footer-lockup span, .footer-lockup b { font-size: 24vw; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+
+    </style>
   </head>
   <body>
     <a class="skip-link" href="#project-content">跳至项目内容</a>
@@ -63,6 +205,225 @@
     </main>
 
     <div class="grid-overlay" aria-hidden="true"><div><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div></div>
-    <script src="project.js?v=20260918d"></script>
+    <script>
+const projects = {
+  'yuhuashi-info': {
+    page: '07', title: '金陵雨花石录 · 信息图谱', year: '2026', typeZh: '信息可视化', typeEn: 'INFOGRAPHIC DESIGN', cover: 'assets/covers-web/yuhuashi-info.webp', pages: ['assets/works-web/yuhuashi-info/01.webp','assets/works-web/yuhuashi-info/02.webp','assets/works-web/yuhuashi-info/03.webp','assets/works-web/yuhuashi-info/04.webp'],
+    deck: '以南京雨花石为研究对象，将宏观形态、剖面结构与色彩量化为可阅读、可比较的信息图谱。',
+    concept: '项目以“采集—辨识—分类—再叙述”为线索，结合地质分类、纹样特征与 CIELAB 色彩数据，建立雨花石的多维视觉档案。',
+    requirements: '设计需要同时承载科学信息与地方文化，在保证数据准确的基础上，让不同尺寸、颜色、纹理和产地之间形成清晰的比较关系。',
+    output: '最终形成研究档案、分类图谱、信息图表与系列应用，通过统一版式连接完整的调研、分析与可视化过程。',
+    claim: '纹理、时间与地域，共同构成一套可以被阅读的自然语言。'
+  },
+  'yuhuashi-installation': {
+    page: '08', title: '金陵雨花石录 · 交互装置', year: '2026', typeZh: '交互装置', typeEn: 'INTERACTIVE INSTALLATION', cover: 'assets/covers-web/yuhuashi-installation-detail.webp', pages: ['assets/works-web/yuhuashi-installation/01.webp','assets/works-web/yuhuashi-installation/02.webp','assets/works-web/yuhuashi-installation/03.webp','assets/works-web/yuhuashi-installation/04.webp'], video: 'assets/videos/yuhuashi-installation-mobile.mp4', videoType: 'video/mp4', videoFallback: 'assets/videos/yuhuashi-installation-web.webm', videoFallbackType: 'video/webm',
+    deck: '将雨花石的矿物色彩与剖面纹样转化为可触摸、可选择、可实时反馈的 Mapping 交互体验。',
+    concept: '参与者选择雨花石并按压感应区域，装置读取石材类型、触摸压力与持续时间，生成动态波纹和对应色彩，使隐藏的地质信息通过光影被感知。',
+    requirements: '交互需要连接矿石样本、压力传感器、Arduino、TouchDesigner 与投影系统，同时保持操作路径直观、反馈及时且具有沉浸感。',
+    output: '完成交互逻辑、硬件搭建、视觉映射、参数测试与装置呈现，形成从“选择—触摸—转译—回应”的完整体验。',
+    claim: '当手触碰石头，亿万年的地质信息被重新点亮。'
+  },
+  nature: {
+    page: '09', title: '自然色差', year: '2026', typeZh: '数据可视化', typeEn: 'DATA VISUALIZATION', cover: 'assets/covers-web/nature.webp', pages: ['assets/works-web/nature/01.webp','assets/works-web/nature/02.webp','assets/works-web/nature/03.webp','assets/works-web/nature/04.webp','assets/works-web/nature/05.webp','assets/works-web/nature/06.webp','assets/works-web/nature/07.webp'], video: 'assets/videos/nature-mobile.mp4', videoType: 'video/mp4', videoFallback: 'assets/videos/nature-web.webm', videoFallbackType: 'video/webm',
+    deck: '从自然环境中的色彩差异出发，将观察、采样与数据转化为一套兼具分析性与感知性的视觉研究。',
+    concept: '色彩既是视觉现象，也是环境变化留下的证据。项目以连续采样和对照关系呈现颜色在时间、地点与媒介中的偏移。',
+    requirements: '需要建立可复用的数据编码方式，同时保留自然色彩的细微感受，避免图表语言压缩掉观察本身的丰富性。',
+    output: '输出包括色彩档案、数据图谱、动态视觉规则与完整展示系统。',
+    claim: '所谓色差不是误差，而是自然在不同条件下留下的可见变化。'
+  },
+  tongqu: {
+    page: '10', title: '瞳趣', year: '2026', typeZh: '产品体验设计', typeEn: 'UX / UI DESIGN', cover: 'assets/covers-web/tongqu.webp', pages: ['assets/works-web/tongqu/01.webp','assets/works-web/tongqu/02.webp','assets/works-web/tongqu/03.webp','assets/works-web/tongqu/04.webp','assets/works-web/tongqu/05.webp'], video: 'assets/videos/tongqu-mobile.mp4', videoType: 'video/mp4', videoFallback: 'assets/videos/tongqu-web.webm', videoFallbackType: 'video/webm',
+    deck: '围绕儿童视觉健康与参与式学习构建数字体验，以轻量任务、反馈机制和清晰的信息层级降低使用门槛。',
+    concept: '将视觉训练从被动检查转化为可理解、可参与的日常体验，让儿童、家长与专业人员共享同一套信息语言。',
+    requirements: '界面需要兼顾儿童的操作直觉、家长的信息判断与专业数据的可靠呈现，并控制视觉刺激强度。',
+    output: '完成用户研究、信息架构、交互原型、界面系统与关键任务流程。',
+    claim: '好的健康体验不是增加提醒，而是让正确的行为自然发生。'
+  },
+  coffee: {
+    page: '11', title: '上海牌咖啡', year: '2025', typeZh: '品牌视觉', typeEn: 'VISUAL IDENTITY', cover: 'assets/covers-web/coffee.webp', pages: ['assets/works-web/coffee/01.webp','assets/works-web/coffee/02.webp','assets/works-web/coffee/03.webp','assets/works-web/coffee/04.webp','assets/works-web/coffee/05.webp'],
+    deck: '从上海城市记忆与咖啡文化出发，建立兼具历史气质和当代秩序的品牌视觉系统。',
+    concept: '项目把城市档案中的字体、建筑节奏与消费文化转化为品牌识别，让怀旧不止停留在表面装饰。',
+    requirements: '视觉需要覆盖包装、海报、空间与数字传播，同时在不同媒介中保持明确的品牌识别。',
+    output: '完成标志、字体层级、色彩系统、包装与系列传播应用。',
+    claim: '城市记忆不是复古滤镜，而是一套仍然能够被重新使用的视觉语法。'
+  },
+  tangsancai: {
+    page: '12', title: '唐三彩 · 文旅网页设计', year: '2026', typeZh: '网页设计', typeEn: 'WEB DESIGN', cover: 'assets/covers-web/tangsancai.webp', pages: ['assets/works-web/tangsancai/01.webp','assets/works-web/tangsancai/02.webp','assets/works-web/tangsancai/03.webp'],
+    deck: '以陕西唐三彩为文化对象，构建兼具文物知识、数字导览与视觉叙事的文旅网页体验。',
+    concept: '以釉色、器型与历史脉络为信息线索，将唐三彩的文化内容转化为可浏览、可检索、可持续延展的数字档案。',
+    requirements: '网页需要兼顾文化信息的准确性、长页面阅读节奏与多端浏览效率，并通过统一组件保持视觉识别。',
+    output: '完成信息架构、网页视觉系统、核心页面设计与响应式展示方案。',
+    claim: '让传统文物从静态展柜进入可探索的数字叙事。'
+  },
+  space: {
+    page: '13', title: '魔方筑境', year: '2025', typeZh: '空间设计', typeEn: 'SPATIAL DESIGN', cover: 'assets/covers-web/space.webp', pages: ['assets/works-web/space/01.webp','assets/works-web/space/02.webp'],
+    deck: '以模块化空间作为情绪调节的媒介，通过路径、尺度、光线与触觉建立可参与的疗愈体验。',
+    concept: '魔方的旋转与组合成为空间组织方法，让使用者通过主动选择重新感知身体、距离和情绪。',
+    requirements: '空间需要可快速组合、适应不同场地，同时在开放与私密之间提供清晰的层次变化。',
+    output: '形成空间叙事、模块结构、材料规范与关键体验场景。',
+    claim: '空间不仅容纳行为，也可以帮助情绪找到新的位置。'
+  },
+  dopamine: {
+    page: '14', title: '不打不打 · 多巴胺行动', year: '2024', typeZh: '视觉传播', typeEn: 'POSTER / CAMPAIGN', cover: 'assets/covers-web/dopamine.webp', pages: ['assets/works-web/dopamine/01.webp','assets/works-web/dopamine/02.webp'],
+    deck: '以高能色彩与直接语句构成反暴力传播行动，将情绪表达转化为公众可参与的视觉事件。',
+    concept: '项目利用“多巴胺”式视觉语言吸引注意，再通过反差文案把观看引向对暴力行为的讨论。',
+    requirements: '传播需要在公共空间中快速识别，同时避免用过度刺激的图像再次制造伤害。',
+    output: '完成系列海报、传播口号、动态规则与公共场景应用。',
+    claim: '鲜艳不意味着轻浮，它也可以成为拒绝暴力的公共信号。'
+  },
+  appetite: {
+    page: '15', title: '食欲补丁', year: '2024', typeZh: '概念视觉', typeEn: 'VISUAL CONCEPT', cover: 'assets/covers-web/appetite.webp', pages: ['assets/works-web/appetite/01.webp','assets/works-web/appetite/02.webp'],
+    deck: '讨论数字媒介如何重塑食欲与消费判断，以“补丁”作为界面、身体和欲望之间的视觉隐喻。',
+    concept: '把食物图像、系统提示与身体感受并置，呈现平台算法如何持续修补并放大人的消费欲望。',
+    requirements: '作品需要保持批判性，同时让复杂议题通过简洁、直接的视觉符号被理解。',
+    output: '完成概念视觉、界面实验、海报与叙事展示。',
+    claim: '当欲望像软件一样不断更新，我们需要重新判断什么是真正的需要。'
+  },
+  cpus: {
+    page: '16', title: 'CPUS', year: '2025', typeZh: '文化海报', typeEn: 'CULTURAL POSTER', cover: 'assets/covers-web/cpus.webp', pages: ['assets/works-web/cpus/01.webp','assets/works-web/cpus/02.webp'],
+    deck: '通过字体、网格与符号实验构建文化活动视觉，将理性的信息秩序与高密度图形表达结合。',
+    concept: 'CPU 的并行运算被转译为多层信息同时发生的版式结构，形成具有技术感的文化传播语言。',
+    requirements: '系统需要适配不同尺寸与传播媒介，并在高信息密度下保持标题和行动信息的清晰。',
+    output: '完成主视觉、系列海报、动态延展与应用规范。',
+    claim: '信息可以并行发生，但设计必须决定观看的顺序。'
+  }
+};
+
+const order = Object.keys(projects);
+const params = new URLSearchParams(window.location.search);
+const id = projects[params.get('id')] ? params.get('id') : order[0];
+const project = projects[id];
+const asset = (path) => path;
+const mobileAsset = (path) => path.replace('assets/works-web/', 'assets/works-mobile/');
+const prefersMobileAssets = window.matchMedia('(max-width: 760px)').matches;
+
+const prepareRetryableImage = (image, fallback) => {
+  let attempts = 0;
+
+  image.addEventListener('load', () => image.closest('figure')?.classList.remove('is-error'));
+  image.addEventListener('error', () => {
+    attempts += 1;
+    image.removeAttribute('srcset');
+
+    if (attempts <= 2) {
+      const retryUrl = new URL(fallback, window.location.href);
+      retryUrl.searchParams.set('retry', `${Date.now()}-${attempts}`);
+      window.setTimeout(() => { image.src = retryUrl.href; }, attempts * 450);
+      return;
+    }
+
+    image.closest('figure')?.classList.add('is-error');
+  });
+};
+
+document.title = `${project.title} — 顾明泱作品集`;
+document.querySelector('[data-title]').textContent = project.title;
+document.querySelector('[data-deck]').textContent = project.deck;
+document.querySelector('[data-type]').innerHTML = `${project.typeZh}<small>${project.typeEn}</small>`;
+document.querySelector('[data-year]').textContent = `/${project.year.slice(-2)}`;
+document.querySelector('[data-concept]').textContent = project.concept;
+document.querySelector('[data-requirements]').textContent = project.requirements;
+document.querySelector('[data-output]').textContent = project.output;
+document.querySelector('.page-code span').textContent = `/${project.page}`;
+document.querySelector('.page-code b').textContent = project.title;
+
+const hero = document.querySelector('[data-hero]');
+hero.alt = `${project.title}项目主视觉`;
+hero.loading = 'eager';
+hero.fetchPriority = 'high';
+hero.decoding = 'async';
+prepareRetryableImage(hero, project.cover);
+hero.src = project.cover;
+
+const pageStack = document.querySelector('.page-stack-inner');
+pageStack.innerHTML = project.pages.map((page, index) => (
+  `<figure class="page-board"><img data-src="${prefersMobileAssets ? mobileAsset(page) : asset(page)}" data-fallback="${asset(page)}" alt="${project.title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`
+)).join('') + (project.video ? (
+  `<figure class="page-board page-video"><video controls playsinline preload="none" poster="${project.cover}" aria-label="${project.title}项目视频"><source src="${project.video}" type="${project.videoType || 'video/mp4'}">${project.videoFallback ? `<source src="${project.videoFallback}" type="${project.videoFallbackType || 'video/webm'}">` : ''}当前浏览器不支持视频播放。</video><figcaption>项目影像 / PROJECT FILM</figcaption></figure>`
+) : '');
+
+const loadBoardImage = (image) => {
+  if (image.src) return;
+  prepareRetryableImage(image, image.dataset.fallback);
+  image.src = image.dataset.src;
+};
+
+const boardImages = [...pageStack.querySelectorAll('img[data-src]')];
+if ('IntersectionObserver' in window) {
+  const boardObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadBoardImage(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '180px 0px' });
+  boardImages.forEach((image) => boardObserver.observe(image));
+} else {
+  boardImages.forEach(loadBoardImage);
+}
+
+const projectVideo = pageStack.querySelector('video');
+if (projectVideo) {
+  const warmVideo = () => {
+    if (projectVideo.dataset.warmed) return;
+    projectVideo.dataset.warmed = 'true';
+    projectVideo.preload = 'metadata';
+    projectVideo.load();
+  };
+
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      warmVideo();
+      observer.disconnect();
+    }, { rootMargin: '1200px 0px' });
+    videoObserver.observe(projectVideo);
+  }
+
+  projectVideo.addEventListener('pointerdown', () => {
+    projectVideo.preload = 'auto';
+    warmVideo();
+  }, { once: true });
+}
+
+const currentIndex = order.indexOf(id);
+const prevId = order[(currentIndex - 1 + order.length) % order.length];
+const nextId = order[(currentIndex + 1) % order.length];
+const prevLink = document.querySelector('[data-prev]');
+const nextLink = document.querySelector('[data-next]');
+prevLink.href = `project.html?id=${prevId}`;
+nextLink.href = `project.html?id=${nextId}`;
+prevLink.querySelector('strong').textContent = projects[prevId].title;
+nextLink.querySelector('strong').textContent = projects[nextId].title;
+
+const loader = document.querySelector('.loader');
+const menuTrigger = document.querySelector('.menu-trigger');
+const menuPanel = document.querySelector('.menu-panel');
+const gridTrigger = document.querySelector('.grid-trigger');
+const gridOverlay = document.querySelector('.grid-overlay');
+const dismissLoader = () => window.setTimeout(() => loader.classList.add('is-gone'), 180);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', dismissLoader, { once: true });
+} else {
+  dismissLoader();
+}
+window.addEventListener('load', () => loader.classList.add('is-gone'), { once: true });
+
+const setMenu = (open) => {
+  menuPanel.classList.toggle('is-open', open);
+  document.body.classList.toggle('menu-open', open);
+  menuPanel.setAttribute('aria-hidden', String(!open));
+  menuTrigger.setAttribute('aria-expanded', String(open));
+  menuTrigger.textContent = open ? '关闭 CLOSE' : '菜单 MENU';
+};
+menuTrigger.addEventListener('click', () => setMenu(!menuPanel.classList.contains('is-open')));
+menuPanel.querySelectorAll('a').forEach((link) => link.addEventListener('click', () => setMenu(false)));
+gridTrigger.addEventListener('click', () => {
+  const active = gridOverlay.classList.toggle('is-visible');
+  gridTrigger.setAttribute('aria-pressed', String(active));
+});
+document.addEventListener('keydown', (event) => { if (event.key === 'Escape') setMenu(false); });
+
+    </script>
   </body>
 </html>
