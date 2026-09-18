@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#f3f3f3" />
+    <title>扫码查看顾明泱作品集</title>
+    <link rel="icon" href="data:," />
+    <style>
+      :root { --paper: #f3f3f3; --ink: #1a1a1a; --line: #8a8a8a; }
+      * { box-sizing: border-box; }
+      body { margin: 0; min-height: 100vh; display: grid; place-items: center; padding: 24px; background: var(--paper); color: var(--ink); font-family: "Helvetica Neue", Arial, "PingFang SC", "Microsoft YaHei", sans-serif; }
+      main { width: min(100%, 760px); min-height: min(920px, calc(100vh - 48px)); display: grid; grid-template-rows: auto 1fr auto; padding: clamp(20px, 5vw, 48px); border: 1px solid var(--ink); background: var(--paper); }
+      header { display: flex; justify-content: space-between; gap: 24px; padding-bottom: 16px; border-bottom: 1px solid var(--line); font-size: 13px; text-transform: uppercase; letter-spacing: .04em; }
+      h1 { margin: 34px 0 0; font-size: clamp(52px, 11vw, 104px); font-weight: 500; line-height: .86; letter-spacing: -.07em; }
+      h1 span { display: block; padding-left: 18%; }
+      .scan { align-self: center; display: grid; grid-template-columns: minmax(190px, 330px) 1fr; align-items: center; gap: clamp(24px, 6vw, 60px); margin: 48px 0; }
+      .scan img { width: 100%; height: auto; border: 12px solid #fff; }
+      .scan h2 { margin: 0 0 18px; font-size: clamp(28px, 5vw, 48px); font-weight: 400; line-height: 1; letter-spacing: -.04em; }
+      .scan p { margin: 0; font-size: 16px; line-height: 1.55; }
+      footer { padding-top: 16px; border-top: 1px solid var(--line); font-size: 12px; line-height: 1.5; overflow-wrap: anywhere; }
+      @media (max-width: 600px) {
+        body { padding: 12px; }
+        main { min-height: calc(100vh - 24px); }
+        .scan { grid-template-columns: 1fr; }
+        .scan img { width: min(100%, 310px); justify-self: center; }
+      }
+      @media print {
+        @page { size: A4 portrait; margin: 12mm; }
+        body { min-height: auto; padding: 0; }
+        main { width: 100%; min-height: 273mm; }
+      }
+    </style>
+  </head>
+  <body>
+    <main>
+      <div>
+        <header><span>顾明泱 / GU MINGYANG</span><span>PORTFOLIO / 2026</span></header>
+        <h1>GU/<span>MY</span></h1>
+      </div>
+      <section class="scan">
+        <img src="assets/portfolio-qr.png" alt="顾明泱作品集网站二维码" />
+        <div>
+          <h2>扫码查看<br />移动端作品集</h2>
+          <p>SCAN TO VIEW<br />MOBILE PORTFOLIO</p>
+        </div>
+      </section>
+      <footer>18016430978-ai.github.io/gu-mingyang-portfolio/</footer>
+    </main>
+  </body>
+</html>
