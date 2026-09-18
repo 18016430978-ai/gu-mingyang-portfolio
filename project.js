@@ -8,7 +8,7 @@ const projects = {
     claim: '纹理、时间与地域，共同构成一套可以被阅读的自然语言。'
   },
   'yuhuashi-installation': {
-    page: '08', title: '金陵雨花石录 · 交互装置', year: '2026', typeZh: '交互装置', typeEn: 'INTERACTIVE INSTALLATION', cover: 'assets/covers-web/yuhuashi-installation-detail.webp', pages: ['assets/works-web/yuhuashi-installation/01.webp','assets/works-web/yuhuashi-installation/02.webp','assets/works-web/yuhuashi-installation/03.webp','assets/works-web/yuhuashi-installation/04.webp'], video: 'assets/videos/yuhuashi-installation-web.webm', videoType: 'video/webm',
+    page: '08', title: '金陵雨花石录 · 交互装置', year: '2026', typeZh: '交互装置', typeEn: 'INTERACTIVE INSTALLATION', cover: 'assets/covers-web/yuhuashi-installation-detail.webp', pages: ['assets/works-web/yuhuashi-installation/01.webp','assets/works-web/yuhuashi-installation/02.webp','assets/works-web/yuhuashi-installation/03.webp','assets/works-web/yuhuashi-installation/04.webp'], video: 'assets/videos/yuhuashi-installation-mobile.mp4', videoType: 'video/mp4', videoFallback: 'assets/videos/yuhuashi-installation-web.webm', videoFallbackType: 'video/webm',
     deck: '将雨花石的矿物色彩与剖面纹样转化为可触摸、可选择、可实时反馈的 Mapping 交互体验。',
     concept: '参与者选择雨花石并按压感应区域，装置读取石材类型、触摸压力与持续时间，生成动态波纹和对应色彩，使隐藏的地质信息通过光影被感知。',
     requirements: '交互需要连接矿石样本、压力传感器、Arduino、TouchDesigner 与投影系统，同时保持操作路径直观、反馈及时且具有沉浸感。',
@@ -16,7 +16,7 @@ const projects = {
     claim: '当手触碰石头，亿万年的地质信息被重新点亮。'
   },
   nature: {
-    page: '09', title: '自然色差', year: '2026', typeZh: '数据可视化', typeEn: 'DATA VISUALIZATION', cover: 'assets/covers-web/nature.webp', pages: ['assets/works-web/nature/01.webp','assets/works-web/nature/02.webp','assets/works-web/nature/03.webp','assets/works-web/nature/04.webp','assets/works-web/nature/05.webp','assets/works-web/nature/06.webp','assets/works-web/nature/07.webp'], video: 'assets/videos/nature-web.webm', videoType: 'video/webm',
+    page: '09', title: '自然色差', year: '2026', typeZh: '数据可视化', typeEn: 'DATA VISUALIZATION', cover: 'assets/covers-web/nature.webp', pages: ['assets/works-web/nature/01.webp','assets/works-web/nature/02.webp','assets/works-web/nature/03.webp','assets/works-web/nature/04.webp','assets/works-web/nature/05.webp','assets/works-web/nature/06.webp','assets/works-web/nature/07.webp'], video: 'assets/videos/nature-mobile.mp4', videoType: 'video/mp4', videoFallback: 'assets/videos/nature-web.webm', videoFallbackType: 'video/webm',
     deck: '从自然环境中的色彩差异出发，将观察、采样与数据转化为一套兼具分析性与感知性的视觉研究。',
     concept: '色彩既是视觉现象，也是环境变化留下的证据。项目以连续采样和对照关系呈现颜色在时间、地点与媒介中的偏移。',
     requirements: '需要建立可复用的数据编码方式，同时保留自然色彩的细微感受，避免图表语言压缩掉观察本身的丰富性。',
@@ -24,7 +24,7 @@ const projects = {
     claim: '所谓色差不是误差，而是自然在不同条件下留下的可见变化。'
   },
   tongqu: {
-    page: '10', title: '瞳趣', year: '2026', typeZh: '产品体验设计', typeEn: 'UX / UI DESIGN', cover: 'assets/covers-web/tongqu.webp', pages: ['assets/works-web/tongqu/01.webp','assets/works-web/tongqu/02.webp','assets/works-web/tongqu/03.webp','assets/works-web/tongqu/04.webp','assets/works-web/tongqu/05.webp'], video: 'assets/videos/tongqu-web.webm', videoType: 'video/webm',
+    page: '10', title: '瞳趣', year: '2026', typeZh: '产品体验设计', typeEn: 'UX / UI DESIGN', cover: 'assets/covers-web/tongqu.webp', pages: ['assets/works-web/tongqu/01.webp','assets/works-web/tongqu/02.webp','assets/works-web/tongqu/03.webp','assets/works-web/tongqu/04.webp','assets/works-web/tongqu/05.webp'], video: 'assets/videos/tongqu-mobile.mp4', videoType: 'video/mp4', videoFallback: 'assets/videos/tongqu-web.webm', videoFallbackType: 'video/webm',
     deck: '围绕儿童视觉健康与参与式学习构建数字体验，以轻量任务、反馈机制和清晰的信息层级降低使用门槛。',
     concept: '将视觉训练从被动检查转化为可理解、可参与的日常体验，让儿童、家长与专业人员共享同一套信息语言。',
     requirements: '界面需要兼顾儿童的操作直觉、家长的信息判断与专业数据的可靠呈现，并控制视觉刺激强度。',
@@ -86,6 +86,27 @@ const params = new URLSearchParams(window.location.search);
 const id = projects[params.get('id')] ? params.get('id') : order[0];
 const project = projects[id];
 const asset = (path) => path;
+const mobileAsset = (path) => path.replace('assets/works-web/', 'assets/works-mobile/');
+const prefersMobileAssets = window.matchMedia('(max-width: 760px)').matches;
+
+const prepareRetryableImage = (image, fallback) => {
+  let attempts = 0;
+
+  image.addEventListener('load', () => image.closest('figure')?.classList.remove('is-error'));
+  image.addEventListener('error', () => {
+    attempts += 1;
+    image.removeAttribute('srcset');
+
+    if (attempts <= 2) {
+      const retryUrl = new URL(fallback, window.location.href);
+      retryUrl.searchParams.set('retry', `${Date.now()}-${attempts}`);
+      window.setTimeout(() => { image.src = retryUrl.href; }, attempts * 450);
+      return;
+    }
+
+    image.closest('figure')?.classList.add('is-error');
+  });
+};
 
 document.title = `${project.title} — 顾明泱作品集`;
 document.querySelector('[data-title]').textContent = project.title;
@@ -99,17 +120,63 @@ document.querySelector('.page-code span').textContent = `/${project.page}`;
 document.querySelector('.page-code b').textContent = project.title;
 
 const hero = document.querySelector('[data-hero]');
-hero.src = project.cover;
 hero.alt = `${project.title}项目主视觉`;
 hero.loading = 'eager';
 hero.fetchPriority = 'high';
 hero.decoding = 'async';
+prepareRetryableImage(hero, project.cover);
+hero.src = project.cover;
+
 const pageStack = document.querySelector('.page-stack-inner');
 pageStack.innerHTML = project.pages.map((page, index) => (
-  `<figure class="page-board"><img src="${asset(page)}" alt="${project.title}项目展板 ${index + 1}" ${index === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"'} decoding="async"></figure>`
+  `<figure class="page-board"><img data-src="${prefersMobileAssets ? mobileAsset(page) : asset(page)}" data-fallback="${asset(page)}" alt="${project.title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`
 )).join('') + (project.video ? (
-  `<figure class="page-board page-video"><video controls playsinline preload="none" poster="${project.cover}" aria-label="${project.title}项目视频"><source src="${project.video}" type="${project.videoType || 'video/mp4'}">${project.videoFallback ? `<source src="${project.videoFallback}" type="video/mp4">` : ''}当前浏览器不支持视频播放。</video><figcaption>项目影像 / PROJECT FILM</figcaption></figure>`
+  `<figure class="page-board page-video"><video controls playsinline preload="none" poster="${project.cover}" aria-label="${project.title}项目视频"><source src="${project.video}" type="${project.videoType || 'video/mp4'}">${project.videoFallback ? `<source src="${project.videoFallback}" type="${project.videoFallbackType || 'video/webm'}">` : ''}当前浏览器不支持视频播放。</video><figcaption>项目影像 / PROJECT FILM</figcaption></figure>`
 ) : '');
+
+const loadBoardImage = (image) => {
+  if (image.src) return;
+  prepareRetryableImage(image, image.dataset.fallback);
+  image.src = image.dataset.src;
+};
+
+const boardImages = [...pageStack.querySelectorAll('img[data-src]')];
+if ('IntersectionObserver' in window) {
+  const boardObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      loadBoardImage(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '180px 0px' });
+  boardImages.forEach((image) => boardObserver.observe(image));
+} else {
+  boardImages.forEach(loadBoardImage);
+}
+
+const projectVideo = pageStack.querySelector('video');
+if (projectVideo) {
+  const warmVideo = () => {
+    if (projectVideo.dataset.warmed) return;
+    projectVideo.dataset.warmed = 'true';
+    projectVideo.preload = 'metadata';
+    projectVideo.load();
+  };
+
+  if ('IntersectionObserver' in window) {
+    const videoObserver = new IntersectionObserver((entries, observer) => {
+      if (!entries.some((entry) => entry.isIntersecting)) return;
+      warmVideo();
+      observer.disconnect();
+    }, { rootMargin: '1200px 0px' });
+    videoObserver.observe(projectVideo);
+  }
+
+  projectVideo.addEventListener('pointerdown', () => {
+    projectVideo.preload = 'auto';
+    warmVideo();
+  }, { once: true });
+}
 
 const currentIndex = order.indexOf(id);
 const prevId = order[(currentIndex - 1 + order.length) % order.length];
@@ -126,7 +193,13 @@ const menuTrigger = document.querySelector('.menu-trigger');
 const menuPanel = document.querySelector('.menu-panel');
 const gridTrigger = document.querySelector('.grid-trigger');
 const gridOverlay = document.querySelector('.grid-overlay');
-window.addEventListener('load', () => window.setTimeout(() => loader.classList.add('is-gone'), 450));
+const dismissLoader = () => window.setTimeout(() => loader.classList.add('is-gone'), 180);
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', dismissLoader, { once: true });
+} else {
+  dismissLoader();
+}
+window.addEventListener('load', () => loader.classList.add('is-gone'), { once: true });
 
 const setMenu = (open) => {
   menuPanel.classList.toggle('is-open', open);

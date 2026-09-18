@@ -25,9 +25,27 @@ const projectCovers = {
 };
 
 const projectVideos = {
-  'yuhuashi-installation': { src: 'assets/videos/yuhuashi-installation-web.webm', type: 'video/webm' },
-  nature: { src: 'assets/videos/nature-web.webm', type: 'video/webm' },
-  tongqu: { src: 'assets/videos/tongqu-web.webm', type: 'video/webm' },
+  'yuhuashi-installation': { src: 'assets/videos/yuhuashi-installation-mobile.mp4', type: 'video/mp4', fallback: 'assets/videos/yuhuashi-installation-web.webm', fallbackType: 'video/webm' },
+  nature: { src: 'assets/videos/nature-mobile.mp4', type: 'video/mp4', fallback: 'assets/videos/nature-web.webm', fallbackType: 'video/webm' },
+  tongqu: { src: 'assets/videos/tongqu-mobile.mp4', type: 'video/mp4', fallback: 'assets/videos/tongqu-web.webm', fallbackType: 'video/webm' },
+};
+
+const prefersMobileAssets = window.matchMedia('(max-width: 760px)').matches;
+const displayPage = (path) => prefersMobileAssets ? path.replace('assets/works-web/', 'assets/works-mobile/') : path;
+
+const loadSlideImage = (image) => {
+  if (!image || image.src) return;
+  let retries = 0;
+  const fallback = image.dataset.fallback;
+  image.addEventListener('error', () => {
+    retries += 1;
+    if (retries > 2) return;
+    const retryUrl = new URL(fallback, window.location.href);
+    retryUrl.searchParams.set('retry', `${Date.now()}-${retries}`);
+    window.setTimeout(() => { image.src = retryUrl.href; }, retries * 450);
+  });
+  image.src = image.dataset.src;
+  image.removeAttribute('data-src');
 };
 
 const loader = document.querySelector('.loader');
@@ -48,7 +66,9 @@ if (document.readyState === 'loading') {
 
 window.addEventListener('load', () => loader.classList.add('is-gone'), { once: true });
 
-document.querySelectorAll('.project').forEach((project) => {
+const initProject = (project) => {
+  if (project.dataset.ready) return;
+  project.dataset.ready = 'true';
   const key = project.dataset.project;
   const pages = projectPages[key];
   const video = projectVideos[key];
@@ -65,18 +85,26 @@ document.querySelectorAll('.project').forEach((project) => {
 
   slides.innerHTML = pages.map((page, index) => {
     const title = project.querySelector('h2').textContent;
-    return `<figure class="slide${index === 0 ? ' is-active' : ''}"><img src="${page}" alt="${title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`;
-  }).join('') + (video ? `<figure class="slide slide-video"><video controls playsinline preload="none" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source src="${video.src}" type="${video.type}">${video.fallback ? `<source src="${video.fallback}" type="video/mp4">` : ''}当前浏览器不支持视频播放。</video><button class="video-play" type="button" aria-label="播放${previewTitle}项目视频"><i aria-hidden="true">▶</i><span>播放视频 / PLAY</span></button></figure>` : '');
+    return `<figure class="slide${index === 0 ? ' is-active' : ''}"><img data-src="${displayPage(page)}" data-fallback="${page}" alt="${title}项目展板 ${index + 1}" loading="lazy" decoding="async"></figure>`;
+  }).join('') + (video ? `<figure class="slide slide-video"><video controls playsinline preload="none" poster="${projectCovers[key]}" aria-label="${previewTitle}项目视频"><source data-src="${video.src}" type="${video.type}">${video.fallback ? `<source data-src="${video.fallback}" type="${video.fallbackType || 'video/webm'}">` : ''}当前浏览器不支持视频播放。</video><button class="video-play" type="button" aria-label="播放${previewTitle}项目视频"><i aria-hidden="true">▶</i><span>播放视频 / PLAY</span></button></figure>` : '');
   counter.textContent = `01 / ${String(total).padStart(2, '0')}`;
+  loadSlideImage(slides.querySelector('.slide.is-active img'));
 
   const media = slides.querySelector('video');
   const playTrigger = slides.querySelector('.video-play');
 
   if (media && playTrigger) {
+    const attachVideoSources = () => {
+      media.querySelectorAll('source[data-src]').forEach((source) => {
+        source.src = source.dataset.src;
+        source.removeAttribute('data-src');
+      });
+    };
     const showPlayTrigger = () => playTrigger.classList.remove('is-hidden');
     const hidePlayTrigger = () => playTrigger.classList.add('is-hidden');
 
     playTrigger.addEventListener('click', async () => {
+      attachVideoSources();
       if (media.readyState === HTMLMediaElement.HAVE_NOTHING) {
         media.preload = 'metadata';
         media.load();
@@ -100,10 +128,16 @@ document.querySelectorAll('.project').forEach((project) => {
     slideElements[current].classList.remove('is-active');
     current = (next + total) % total;
     slideElements[current].classList.add('is-active');
+    const activeImage = slideElements[current].querySelector('img[data-src]');
+    loadSlideImage(activeImage);
     counter.textContent = `${String(current + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`;
 
     const activeVideo = slideElements[current].querySelector('video');
     if (activeVideo && activeVideo.readyState === HTMLMediaElement.HAVE_NOTHING) {
+      activeVideo.querySelectorAll('source[data-src]').forEach((source) => {
+        source.src = source.dataset.src;
+        source.removeAttribute('data-src');
+      });
       activeVideo.preload = 'metadata';
       activeVideo.load();
     }
@@ -111,7 +145,21 @@ document.querySelectorAll('.project').forEach((project) => {
 
   project.querySelector('[data-prev]').addEventListener('click', () => update(current - 1));
   project.querySelector('[data-next]').addEventListener('click', () => update(current + 1));
-});
+};
+
+const projects = [...document.querySelectorAll('.project')];
+if ('IntersectionObserver' in window) {
+  const projectObserver = new IntersectionObserver((entries, observer) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      initProject(entry.target);
+      observer.unobserve(entry.target);
+    });
+  }, { rootMargin: '700px 0px' });
+  projects.forEach((project) => projectObserver.observe(project));
+} else {
+  projects.forEach(initProject);
+}
 
 const setMenu = (open) => {
   menuPanel.classList.toggle('is-open', open);

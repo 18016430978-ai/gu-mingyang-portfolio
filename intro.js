@@ -4,9 +4,15 @@ const menuPanel = document.querySelector('.menu-panel');
 const gridTrigger = document.querySelector('.grid-trigger');
 const gridOverlay = document.querySelector('.grid-overlay');
 
-window.addEventListener('load', () => {
-  window.setTimeout(() => loader.classList.add('is-gone'), 450);
-});
+const dismissLoader = () => window.setTimeout(() => loader.classList.add('is-gone'), 180);
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', dismissLoader, { once: true });
+} else {
+  dismissLoader();
+}
+
+window.addEventListener('load', () => loader.classList.add('is-gone'), { once: true });
 
 const setMenu = (open) => {
   menuPanel.classList.toggle('is-open', open);
