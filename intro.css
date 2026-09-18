@@ -193,9 +193,10 @@ footer { min-height: 100vh; padding: 0 var(--pad) 12px; display: flex; flex-dire
   .resume-summary dd b { font-size: clamp(18px, 5.4vw, 23px); line-height: 1; overflow-wrap: anywhere; }
   .resume-summary dd span { font-size: 10px; line-height: 1.45; }
   .portrait-feature { position: static; width: 100%; height: auto; aspect-ratio: 4 / 5; margin-top: 18px; border-radius: 12px; }
-  .hero-bottom { position: static; height: auto; min-height: 92px; margin-top: 18px; padding: 18px 0 10px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; align-items: end; border-top: 1px solid var(--line); }
-  .hero-bottom h1, .hero-bottom h2 { position: static; min-width: 0; font-size: clamp(28px, 8.5vw, 40px); overflow-wrap: anywhere; }
-  .hero-bottom h2 { max-width: none; text-align: right; }
+  .hero-bottom { position: static; height: auto; min-height: 0; margin-top: 18px; padding: 16px 0 12px; display: flex; flex-direction: column; gap: 12px; align-items: stretch; border-top: 1px solid var(--line); }
+  .hero-bottom h1, .hero-bottom h2 { position: static; min-width: 0; margin: 0; line-height: .9; overflow-wrap: normal; white-space: nowrap; }
+  .hero-bottom h1 { font-size: clamp(18px, 5vw, 22px); letter-spacing: -.025em; }
+  .hero-bottom h2 { max-width: none; font-size: clamp(40px, 12vw, 54px); text-align: left; }
 
   .portfolio-index { padding-top: 14px; }
   .current-window { width: 48vw; height: 37vw; border-radius: 12px; }
@@ -235,7 +236,8 @@ footer { min-height: 100vh; padding: 0 var(--pad) 12px; display: flex; flex-dire
   .identity-display { font-size: 34vw; }
   .identity-meta { font-size: 11px; }
   .resume-summary dl > div { grid-template-columns: 68px minmax(0, 1fr); }
-  .hero-bottom h1, .hero-bottom h2 { font-size: 7.8vw; }
+  .hero-bottom h1 { font-size: 5vw; }
+  .hero-bottom h2 { font-size: 11vw; white-space: normal; }
   .footer-lockup span, .footer-lockup b { font-size: 24vw; }
 }
 

@@ -6,7 +6,7 @@ from PIL import Image
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "assets" / "works-web"
 DESTINATION = ROOT / "assets" / "works-mobile"
-TARGET_WIDTH = 1280
+TARGET_WIDTH = 960
 
 
 def build_mobile_image(source: Path) -> Path:
@@ -18,7 +18,7 @@ def build_mobile_image(source: Path) -> Path:
         image = image.convert("RGB")
         height = round(image.height * TARGET_WIDTH / image.width)
         image = image.resize((TARGET_WIDTH, height), Image.Resampling.LANCZOS)
-        image.save(destination, "WEBP", quality=72, method=6)
+        image.save(destination, "WEBP", quality=68, method=6)
 
     return destination
 
